@@ -6,6 +6,8 @@ public class BirdControl : MonoBehaviour
 {
     public UnityEngine.UI.Image watchMeter;
 
+    bool watched = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -24,5 +26,16 @@ public class BirdControl : MonoBehaviour
     public void CheckIfWatched()
     {
         watchMeter.fillAmount += 0.1f;
+
+        // check if bird fully watched
+        if(watchMeter.fillAmount >= 1)
+        {
+            watched = true;
+
+            // make bird translucent and disappear watch meter
+            watchMeter.gameObject.SetActive(false);
+            SpriteRenderer sprite = GetComponent<SpriteRenderer>();
+            sprite.color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
+        }
     }
 }

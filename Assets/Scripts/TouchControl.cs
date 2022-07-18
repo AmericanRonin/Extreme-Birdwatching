@@ -18,17 +18,20 @@ public class TouchControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // logic for changing how fast to move camera based on zoom
         float zoomFactor = 1.0f;
         if(bionculars.binocularsOn)
         {
             zoomFactor = zoomFactor / bionculars.binocularZoom;
         }
 
+        // set a timer to check tap length
         if(Input.GetMouseButtonDown(0))
         {
             tapTime = 0.0f;
         }
 
+        // logic to move the camera -- includes zoomFactor for speed
         if(Input.GetMouseButton(0))
         {
             Camera.main.transform.Translate(-Input.GetAxis("Mouse X") * zoomFactor,
@@ -42,14 +45,18 @@ public class TouchControl : MonoBehaviour
             // check if short tap
             if(tapTime < 0.2f)
             {
-                // go through birds and see if watched
-                foreach(Transform child in birds.transform)
+                // check that binoculars are on
+                if (bionculars.binocularsOn)
                 {
-                    // check that bird is visible
-                    if(child.GetComponent<Renderer>().isVisible)
+                    // go through birds and see if watched
+                    foreach (Transform child in birds.transform)
                     {
-                        // do watch logic
-                        child.GetComponent<BirdControl>().CheckIfWatched();
+                        // check that bird is visible
+                        if (child.GetComponent<Renderer>().isVisible)
+                        {
+                            // do watch logic
+                            child.GetComponent<BirdControl>().CheckIfWatched();
+                        }
                     }
                 }
             }
